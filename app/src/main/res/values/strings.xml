@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Books</string>
+
+    <string name="search_input_placeholder">Search books</string>
+    <string name="home_screen_description">Search the world\'s most comprehensive index of full-text books</string>
+    <string name="button_text">Search</string>
+</resources>
