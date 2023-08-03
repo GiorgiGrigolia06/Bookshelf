@@ -4,4 +4,15 @@
     <dimen name="focused_search_bar_elevation">5dp</dimen>
     <dimen name="search_bar_max_width">250dp</dimen>
     <dimen name="home_screen_description_padding">24dp</dimen>
+    <dimen name="lazy_column_horizontal_content_padding">15dp</dimen>
+    <dimen name="lazy_column_vertical_content_padding">15dp</dimen>
+    <dimen name="lazy_column_vertical_arrangement">15dp</dimen>
+    <dimen name="card_spacer_width">15dp</dimen>
+    <dimen name="card_default_elevation">1dp</dimen>
+    <dimen name="loading_failed_padding">16dp</dimen>
+    <dimen name="loading_screen_image_size">200dp</dimen>
+    <dimen name="card_content_padding">10dp</dimen>
+    <dimen name="card_title_spacer">16dp</dimen>
+    <dimen name="spacer_between_title_and_content">16dp</dimen>
+    <dimen name="divider_thickness">1dp</dimen>
 </resources>

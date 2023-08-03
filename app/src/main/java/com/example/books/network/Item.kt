@@ -17,8 +17,13 @@ data class Item(
 
 @Serializable
 data class VolumeInfo(
-    val imageLinks: ImageLinks
+    val title: String = "Title not available",
+    val authors: List<String> = listOf("Authors not available"),
+    val publishedDate: String = "Date not available",
+    val description: String = "Description not available",
+    val imageLinks: ImageLinks = ImageLinks(thumbnail = "Image not available")
 )
+
 
 @Serializable
 data class ImageLinks(
