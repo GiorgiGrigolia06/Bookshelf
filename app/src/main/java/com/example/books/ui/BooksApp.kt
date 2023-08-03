@@ -61,7 +61,10 @@ fun BooksApp(
                 }
 
                 composable(route = BooksScreen.RESULTS.name) {
-                    ResultsScreen(booksUiState = booksViewModel.booksUiState)
+                    ResultsScreen(
+                        booksUiState = booksViewModel.booksUiState,
+                        tryAgain = { booksViewModel.getBooks() }
+                    )
                 }
             }
         }
@@ -77,7 +80,7 @@ fun BooksAppTopAppBar(
         title = {
             Text(
                 text = stringResource(R.string.app_name).uppercase(),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.titleLarge
             )
         },
         modifier = modifier

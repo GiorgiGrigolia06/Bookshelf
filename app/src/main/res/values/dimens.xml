@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <dimen name="unfocused_search_bar_elevation">0dp</dimen>
     <dimen name="focused_search_bar_elevation">5dp</dimen>
@@ -15,4 +16,5 @@
     <dimen name="card_title_spacer">16dp</dimen>
     <dimen name="spacer_between_title_and_content">16dp</dimen>
     <dimen name="divider_thickness">1dp</dimen>
+    <dimen name="content_text_spacer">10dp</dimen>
 </resources>

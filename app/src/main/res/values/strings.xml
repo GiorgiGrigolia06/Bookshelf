@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Bookshelf</string>
-
     <string name="search_input_placeholder">Search books</string>
     <string name="home_screen_description">Search the world\'s most comprehensive index of full-text books</string>
     <string name="button_text">Search</string>
+    <string name="publication_not_available">Publication date not available</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="loading_failed">Loading Failed</string>
+    <string name="try_again">Try Again</string>
 </resources>

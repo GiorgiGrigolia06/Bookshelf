@@ -2,6 +2,7 @@ package com.example.books.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,10 +43,11 @@ import com.example.books.network.VolumeInfo
 @Composable
 fun ResultsScreen(
     booksUiState: BooksUiState,
+    tryAgain: () -> Unit,
 ) {
     when (booksUiState) {
         is BooksUiState.Success -> BooksLazyColumn(items = booksUiState.item.items)
-        is BooksUiState.Error -> ErrorScreen()
+        is BooksUiState.Error -> ErrorScreen(tryAgain = tryAgain)
         is BooksUiState.Loading -> LoadingScreen()
     }
 }
@@ -62,7 +64,10 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
+fun ErrorScreen(
+    modifier: Modifier = Modifier,
+    tryAgain: () -> Unit,
+) {
     Box(modifier = modifier.fillMaxSize(), Alignment.Center){
         Column(
             modifier = modifier,
@@ -71,9 +76,16 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_connection_error),
-                contentDescription = ""
+                contentDescription = stringResource(R.string.loading_failed)
             )
-            Text(text = "Loading Failed", modifier = Modifier.padding(dimensionResource(R.dimen.loading_failed_padding)))
+            Text(
+                text = stringResource(R.string.loading_failed),
+                modifier = Modifier.padding(dimensionResource(R.dimen.loading_failed_padding))
+            )
+            Text(
+                text = stringResource(R.string.try_again),
+                modifier = Modifier.clickable { tryAgain() }
+            )
         }
     }
 }
@@ -95,12 +107,12 @@ fun BookCard(
                 Column{
                     Text(
                         text = itemInfo.title,
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.headlineMedium
                     )
 
                     Text(
                         text = stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelSmall
                     )
 
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.card_title_spacer)))
@@ -137,22 +149,27 @@ fun BookCard(
 
                 Column {
                     Text(
-                        text = if(itemInfo.authors.size > 1) "Authors: ${itemInfo.authors.joinToString(", ")}"
-                        else "Author: ${itemInfo.authors.joinToString()}"
+                        text = itemInfo.authors.joinToString(),
+                        style = MaterialTheme.typography.labelLarge
                     )
 
                     Text(
-                        text = "Publish date: ${itemInfo.publishedDate.take(integerResource(R.integer.publish_date_max_shown_chars))}"
+                        text = if(itemInfo.publishedDate == stringResource(R.string.publication_not_available))
+                            stringResource(R.string.publication_not_available)
+                        else itemInfo.publishedDate.take(integerResource(R.integer.publish_date_max_shown_chars)),
+                        style = MaterialTheme.typography.labelLarge
                     )
+                    
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.content_text_spacer)))
 
-                    Box {
-                        Text(
-                            text = if(itemInfo.description === "Description not available") "Description not available"
-                            else "Description:\n${itemInfo.description.take(integerResource(R.integer.description_max_shown_chars))}",
-                            maxLines = integerResource(R.integer.description_max_lines),
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                    Text(
+                        text = if(itemInfo.description == stringResource(R.string.description_not_available))
+                            stringResource(R.string.description_not_available)
+                        else itemInfo.description.take(integerResource(R.integer.description_max_shown_chars)),
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = integerResource(R.integer.description_max_lines),
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
