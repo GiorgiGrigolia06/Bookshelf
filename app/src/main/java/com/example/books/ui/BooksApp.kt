@@ -9,13 +9,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.books.R
 import com.example.books.ui.screens.BooksViewModel
@@ -33,10 +31,7 @@ fun BooksApp(
 ) {
     val booksViewModel: BooksViewModel = viewModel(factory = BooksViewModel.Factory)
     val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = BooksScreen.valueOf(
-        backStackEntry?.destination?.route ?: BooksScreen.SEARCH.name
-    )
+
     Scaffold(
         topBar = { BooksAppTopAppBar() }
     ) { it ->
@@ -56,14 +51,16 @@ fun BooksApp(
                         onSearch = {
                             navController.navigate(route = BooksScreen.RESULTS.name)
                             booksViewModel.getBooks()
-                        }
+                        },
+                        clearUserInput = { booksViewModel.clearUserInput() }
                     )
                 }
 
                 composable(route = BooksScreen.RESULTS.name) {
                     ResultsScreen(
                         booksUiState = booksViewModel.booksUiState,
-                        tryAgain = { booksViewModel.getBooks() }
+                        tryAgain = { booksViewModel.getBooks() },
+                        goHome = { navController.navigate(route = BooksScreen.SEARCH.name) }
                     )
                 }
             }
@@ -80,7 +77,8 @@ fun BooksAppTopAppBar(
         title = {
             Text(
                 text = stringResource(R.string.app_name).uppercase(),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.87f)
             )
         },
         modifier = modifier

@@ -34,6 +34,10 @@ class BooksViewModel(private val booksRepository: Repository): ViewModel() {
         userInput = input
     }
 
+    fun clearUserInput() {
+        userInput = ""
+    }
+
     fun getBooks() {
         booksUiState = BooksUiState.Loading
         viewModelScope.launch {

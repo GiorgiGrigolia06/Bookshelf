@@ -1,6 +1,8 @@
 package com.example.books.ui.screens
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -35,10 +38,20 @@ fun SearchScreen(
     value: String,
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit,
+    clearUserInput: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val focusManager = LocalFocusManager.current
+    val interactionSource = MutableInteractionSource() // disabling animation when button is clicked
+
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { focusManager.clearFocus() },
         Alignment.Center
     ){
         Column(
@@ -57,7 +70,8 @@ fun SearchScreen(
                 placeholder = R.string.search_input_placeholder,
                 value = value,
                 onValueChange = onValueChange,
-                onSearch = onSearch
+                onSearch = onSearch,
+                clearUserInput = clearUserInput
             )
         }
     }
@@ -71,6 +85,7 @@ fun SearchBar(
     value: String,
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit,
+    clearUserInput: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -83,12 +98,20 @@ fun SearchBar(
             onValueChange = onValueChange,
             placeholder = { Text(stringResource(placeholder)) },
             singleLine = true,
-            shape = MaterialTheme.shapes.small,
+            shape = MaterialTheme.shapes.medium,
+            leadingIcon = {
+                Icon(
+                    painterResource(R.drawable.baseline_search_24),
+                    contentDescription = null,
+                    modifier = Modifier.clickable { onSearch() }
+                )
+            },
             trailingIcon =
             {
                 Icon(
-                    painterResource(R.drawable.baseline_search_24),
-                    contentDescription = null
+                    painterResource(R.drawable.baseline_clear_24),
+                    contentDescription = null,
+                    modifier = Modifier.clickable { clearUserInput() }
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -97,9 +120,12 @@ fun SearchBar(
             ),
             keyboardActions = KeyboardActions { onSearch() },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color.Transparent,
+                focusedBorderColor =
+                if (isSystemInDarkTheme()) Color.Transparent
+                else colorResource(R.color.search_bar_border_light_theme),
                 unfocusedBorderColor = colorResource(R.color.search_bar_border),
-                containerColor = if (isSystemInDarkTheme()) colorResource(R.color.search_bar_container_color_dark_mode) else Color.Transparent
+                containerColor = if (isSystemInDarkTheme()) colorResource(R.color.search_bar_container_color_dark_mode)
+                else Color.Transparent
             ),
             modifier = Modifier
                 .widthIn(max = dimensionResource(R.dimen.search_bar_max_width))

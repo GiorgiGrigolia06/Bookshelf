@@ -31,6 +31,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -44,10 +45,11 @@ import com.example.books.network.VolumeInfo
 fun ResultsScreen(
     booksUiState: BooksUiState,
     tryAgain: () -> Unit,
+    goHome: () -> Unit
 ) {
     when (booksUiState) {
         is BooksUiState.Success -> BooksLazyColumn(items = booksUiState.item.items)
-        is BooksUiState.Error -> ErrorScreen(tryAgain = tryAgain)
+        is BooksUiState.Error -> ErrorScreen(tryAgain = tryAgain, goHome = goHome)
         is BooksUiState.Loading -> LoadingScreen()
     }
 }
@@ -67,6 +69,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 fun ErrorScreen(
     modifier: Modifier = Modifier,
     tryAgain: () -> Unit,
+    goHome: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize(), Alignment.Center){
         Column(
@@ -78,13 +81,23 @@ fun ErrorScreen(
                 painter = painterResource(id = R.drawable.ic_connection_error),
                 contentDescription = stringResource(R.string.loading_failed)
             )
+
             Text(
                 text = stringResource(R.string.loading_failed),
+                color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(dimensionResource(R.dimen.loading_failed_padding))
             )
+
             Text(
                 text = stringResource(R.string.try_again),
+                color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.clickable { tryAgain() }
+            )
+
+            Text(
+                text = stringResource(R.string.go_back_to_search),
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.clickable { goHome() }
             )
         }
     }
@@ -107,12 +120,15 @@ fun BookCard(
                 Column{
                     Text(
                         text = itemInfo.title,
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Text(
                         text = stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.labelSmall
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colorScheme.secondary
                     )
 
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.card_title_spacer)))
@@ -150,14 +166,16 @@ fun BookCard(
                 Column {
                     Text(
                         text = itemInfo.authors.joinToString(),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Text(
                         text = if(itemInfo.publishedDate == stringResource(R.string.publication_not_available))
                             stringResource(R.string.publication_not_available)
                         else itemInfo.publishedDate.take(integerResource(R.integer.publish_date_max_shown_chars)),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.secondary
                     )
                     
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.content_text_spacer)))
@@ -165,10 +183,11 @@ fun BookCard(
                     Text(
                         text = if(itemInfo.description == stringResource(R.string.description_not_available))
                             stringResource(R.string.description_not_available)
-                        else itemInfo.description.take(integerResource(R.integer.description_max_shown_chars)),
+                        else itemInfo.description,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = integerResource(R.integer.description_max_lines),
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
             }

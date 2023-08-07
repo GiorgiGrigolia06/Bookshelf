@@ -3,7 +3,7 @@
 <resources>
     <dimen name="unfocused_search_bar_elevation">0dp</dimen>
     <dimen name="focused_search_bar_elevation">5dp</dimen>
-    <dimen name="search_bar_max_width">250dp</dimen>
+    <dimen name="search_bar_max_width">280dp</dimen>
     <dimen name="home_screen_description_padding">24dp</dimen>
     <dimen name="lazy_column_horizontal_content_padding">15dp</dimen>
     <dimen name="lazy_column_vertical_content_padding">15dp</dimen>
