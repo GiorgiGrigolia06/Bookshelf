@@ -1,13 +1,20 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    // Kotlin serialization plugin
+
+    // Kotlin serialization plugin for API
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
 android {
     namespace = "com.example.books"
     compileSdk = 33
+
+    // Hide API_KEY
+    val properties = Properties()
+    properties.load(rootProject.file("local.properties").inputStream())
 
     defaultConfig {
         applicationId = "com.example.books"
@@ -20,6 +27,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // Hide API_KEY
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
@@ -31,19 +41,26 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose = true
+        // Hide API_KEY
+        buildConfig = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -52,7 +69,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
@@ -92,6 +108,6 @@ dependencies {
     2) An AsyncImage composable to actually display that image.
      */
 
+    // Navigation implementation
     implementation("androidx.navigation:navigation-compose:2.6.0")
-
 }
