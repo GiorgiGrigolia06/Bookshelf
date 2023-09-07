@@ -5,7 +5,7 @@ During development, one of the main challenges was effectively fetching data fro
 
 To ensure the app's reliability, I conducted thorough testing on the ViewModel and NetworkRepository. During the testing phase, I utilized dependency injection to provide the necessary dependencies to the ViewModel and NetworkRepository. This approach allowed me to achieve loose coupling between different components and facilitated easier testing and maintenance of the app.
 
-## Screenshots
+## Preview
 <p align="left">
     <img src="1.png" alt="Main Page" width="220" height="460">&nbsp;&nbsp;
     <img src="2.png" alt="Main Page while typing" width="220" height="460">&nbsp;&nbsp;
