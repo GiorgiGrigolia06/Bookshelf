@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,10 +10,6 @@ android {
     namespace = "com.example.books"
     compileSdk = 33
 
-    // Hide API_KEY
-    val properties = Properties()
-    properties.load(rootProject.file("local.properties").inputStream())
-
     defaultConfig {
         applicationId = "com.example.books"
         minSdk = 24
@@ -27,9 +21,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        // Hide API_KEY
-        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
     }
 
     buildTypes {
@@ -53,8 +44,6 @@ android {
 
     buildFeatures {
         compose = true
-        // Hide API_KEY
-        buildConfig = true
     }
 
     composeOptions {
